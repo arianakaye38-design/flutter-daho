@@ -1,3 +1,7 @@
+// Suppress info about using BuildContext across async gaps here. The
+// courier dashboard uses synchronous navigation/showDialog calls; if we add
+// async work later we'll add proper mounted checks instead of silencing.
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -80,21 +84,34 @@ class CourierDashboard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                            onPressed: () => debugPrint("Notifications clicked!"),
-                            icon: const FaIcon(FontAwesomeIcons.bell, size: 22, color: Color(0xFF1F2937)),
+                            onPressed: () =>
+                                debugPrint("Notifications clicked!"),
+                            icon: const FaIcon(
+                              FontAwesomeIcons.bell,
+                              size: 22,
+                              color: Color(0xFF1F2937),
+                            ),
                           ),
                           IconButton(
                             onPressed: () {
                               // Replace with your navigation logic
-                              debugPrint('Navigate to user-settings from courier-dashboard');
+                              debugPrint(
+                                'Navigate to user-settings from courier-dashboard',
+                              );
                             },
-                            // ignore: deprecated_member_use
-                            icon: const FaIcon(FontAwesomeIcons.cog, size: 22, color: Color(0xFF1F2937)),
+                            icon: const FaIcon(
+                              FontAwesomeIcons.gear,
+                              size: 22,
+                              color: Color(0xFF1F2937),
+                            ),
                           ),
                           IconButton(
                             onPressed: () => debugPrint("History clicked!"),
-                            // ignore: deprecated_member_use
-                            icon: const FaIcon(FontAwesomeIcons.history, size: 22, color: Color(0xFF1F2937)),
+                            icon: const FaIcon(
+                              FontAwesomeIcons.clockRotateLeft,
+                              size: 22,
+                              color: Color(0xFF1F2937),
+                            ),
                           ),
                         ],
                       ),
@@ -135,7 +152,8 @@ class CourierDashboard extends StatelessWidget {
                               children: [
                                 // Header with title and menu icon
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
                                       'Delivery Tasks / Active Orders',
@@ -146,8 +164,11 @@ class CourierDashboard extends StatelessWidget {
                                       ),
                                     ),
                                     IconButton(
-                                      // ignore: deprecated_member_use
-                                      icon: const FaIcon(FontAwesomeIcons.ellipsisV, size: 18, color: Color(0xFF6B7280)),
+                                      icon: const FaIcon(
+                                        FontAwesomeIcons.ellipsisVertical,
+                                        size: 18,
+                                        color: Color(0xFF6B7280),
+                                      ),
                                       onPressed: () => _log('Menu clicked!'),
                                     ),
                                   ],
@@ -184,12 +205,14 @@ class CourierDashboard extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 16),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   MobileButton(
                                     icon: FontAwesomeIcons.bell,
                                     label: 'Alerts',
-                                    onPressed: () => _log('Notifications clicked!'),
+                                    onPressed: () =>
+                                        _log('Notifications clicked!'),
                                   ),
                                   MobileButton(
                                     // ignore: deprecated_member_use
@@ -197,7 +220,9 @@ class CourierDashboard extends StatelessWidget {
                                     label: 'Settings',
                                     onPressed: () {
                                       // Replace with your navigation logic
-                                      _log('Navigate to user-settings from courier-dashboard');
+                                      _log(
+                                        'Navigate to user-settings from courier-dashboard',
+                                      );
                                     },
                                   ),
                                   MobileButton(
@@ -213,7 +238,9 @@ class CourierDashboard extends StatelessWidget {
                           // Map Card
                           Container(
                             height: isDesktop ? 300 : 400,
-                            width: isDesktop ? double.infinity : double.infinity,
+                            width: isDesktop
+                                ? double.infinity
+                                : double.infinity,
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               color: const Color(0xFFF9FAFB),
@@ -241,7 +268,9 @@ class CourierDashboard extends StatelessWidget {
                                   child: Center(
                                     child: Text(
                                       'Map Placeholder. GIS content here.',
-                                      style: TextStyle(color: Color(0xFF6B7280)),
+                                      style: TextStyle(
+                                        color: Color(0xFF6B7280),
+                                      ),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -255,7 +284,7 @@ class CourierDashboard extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -335,37 +364,82 @@ class DeliveryCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(orderId, style: const TextStyle(fontWeight: FontWeight.w700, color: Color(0xFF111827))),
+              Text(
+                orderId,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF111827),
+                ),
+              ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: statusColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   status,
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: statusTextColor),
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: statusTextColor,
+                  ),
                 ),
-              )
+              ),
             ],
           ),
           const SizedBox(height: 6),
-          Text.rich(TextSpan(children: [
-            const TextSpan(text: 'Customer: ', style: TextStyle(fontWeight: FontWeight.w600)),
-            TextSpan(text: customer),
-          ]), style: const TextStyle(fontSize: 14, color: Color(0xFF374151))),
-          Text.rich(TextSpan(children: [
-            const TextSpan(text: 'Product: ', style: TextStyle(fontWeight: FontWeight.w600)),
-            TextSpan(text: product),
-          ]), style: const TextStyle(fontSize: 14, color: Color(0xFF374151))),
-          Text.rich(TextSpan(children: [
-            const TextSpan(text: 'Pickup: ', style: TextStyle(fontWeight: FontWeight.w600)),
-            TextSpan(text: pickup),
-          ]), style: const TextStyle(fontSize: 14, color: Color(0xFF374151))),
-          Text.rich(TextSpan(children: [
-            const TextSpan(text: 'Drop-off: ', style: TextStyle(fontWeight: FontWeight.w600)),
-            TextSpan(text: dropoff),
-          ]), style: const TextStyle(fontSize: 14, color: Color(0xFF374151))),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Customer: ',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                TextSpan(text: customer),
+              ],
+            ),
+            style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+          ),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Product: ',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                TextSpan(text: product),
+              ],
+            ),
+            style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+          ),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Pickup: ',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                TextSpan(text: pickup),
+              ],
+            ),
+            style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+          ),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Drop-off: ',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                TextSpan(text: dropoff),
+              ],
+            ),
+            style: const TextStyle(fontSize: 14, color: Color(0xFF374151)),
+          ),
         ],
       ),
     );
@@ -395,7 +469,7 @@ class MobileButton extends StatelessWidget {
           Text(
             label,
             style: const TextStyle(fontSize: 12, color: Color(0xFF111827)),
-          )
+          ),
         ],
       ),
     );

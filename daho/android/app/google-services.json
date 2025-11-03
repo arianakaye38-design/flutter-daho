@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "267862940767",
+    "project_id": "daho-dev",
+    "storage_bucket": "daho-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267862940767:android:f2d23c6d50a613646c4fea",
+        "android_client_info": {
+          "package_name": "com.example.daho"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMpQ0aBJRZ8heyyXPwUJJUkIdZw5gXPNI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

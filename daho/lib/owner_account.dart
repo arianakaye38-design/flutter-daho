@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 
 final List<Map<String, dynamic>> productData = [
@@ -22,11 +23,7 @@ final List<Map<String, dynamic>> productData = [
     'price': '₱200.00',
     'img': 'assets/images/partial-react-logo.png',
   },
-  {
-    'name': 'more',
-    'price': '',
-    'img': null,
-  },
+  {'name': 'more', 'price': '', 'img': null},
 ];
 
 class OwnerDashboard extends StatefulWidget {
@@ -50,14 +47,21 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
         title: const Text('Contact Courier'),
         content: const Text('This would open a chat or call with a courier.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
         ],
       ),
     );
   }
 
   void handleSettings() {
-    Navigator.pushNamed(context, '/user-settings', arguments: {'from': 'owner-dashboard'});
+    Navigator.pushNamed(
+      context,
+      '/user-settings',
+      arguments: {'from': 'owner-dashboard'},
+    );
   }
 
   void handleInbox() {
@@ -67,7 +71,10 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
         title: const Text('Inbox'),
         content: const Text('This would open your Inbox.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
         ],
       ),
     );
@@ -91,7 +98,11 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
               alignment: Alignment.center,
               child: const Text(
                 'More',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.black87),
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: Colors.black87,
+                ),
               ),
             ),
           );
@@ -116,10 +127,21 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(p['name'],
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87)),
-                      Text(p['price'] ?? '',
-                          style: const TextStyle(color: Colors.grey, fontSize: 14)),
+                      Text(
+                        p['name'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        p['price'] ?? '',
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -143,30 +165,33 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
         'color': Colors.orange[700],
         'onPressed': handleContactCourier,
       },
-      {
-        'label': 'Inbox',
-        'color': Colors.blue[700],
-        'onPressed': handleInbox,
-      },
+      {'label': 'Inbox', 'color': Colors.blue[700], 'onPressed': handleInbox},
     ];
 
-    List<Widget> quickActionButtons = buttons.map(
-      (btn) => Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: btn['color'] as Color?, // <-- Cast added here
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    List<Widget> quickActionButtons = buttons
+        .map(
+          (btn) => Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: btn['color'] as Color?, // <-- Cast added here
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: btn['onPressed'] as void Function()?,
+              child: Text(
+                btn['label'] as String,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
-          onPressed: btn['onPressed'] as void Function()?,
-          child: Text(
-            btn['label'] as String,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    ).toList();
+        )
+        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -199,11 +224,22 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: const [
-                                Text('Welcome, Shop Owner!',
-                                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87)),
+                                Text(
+                                  'Welcome, Shop Owner!',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
+                                ),
                                 SizedBox(height: 4),
-                                Text('Manage your products and orders here.',
-                                    style: TextStyle(fontSize: 15, color: Colors.grey)),
+                                Text(
+                                  'Manage your products and orders here.',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -216,8 +252,14 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text('Product Highlights',
-                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black87)),
+                                const Text(
+                                  'Product Highlights',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black87,
+                                  ),
+                                ),
                                 const SizedBox(height: 14),
                                 renderProducts(),
                               ],
@@ -242,8 +284,14 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Quick Actions',
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black87)),
+                              const Text(
+                                'Quick Actions',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black87,
+                                ),
+                              ),
                               const SizedBox(height: 10),
                               renderQuickActions(),
                             ],
@@ -264,14 +312,20 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               alignment: Alignment.center,
-                              child: const Text('Settings',
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87)),
+                              child: const Text(
+                                'Settings',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             )
@@ -290,11 +344,19 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
-                        Text('Welcome, Shop Owner!',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87)),
+                        Text(
+                          'Welcome, Shop Owner!',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
                         SizedBox(height: 4),
-                        Text('Manage your products and orders here.',
-                            style: TextStyle(fontSize: 15, color: Colors.grey)),
+                        Text(
+                          'Manage your products and orders here.',
+                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                        ),
                       ],
                     ),
                   ),
@@ -308,8 +370,14 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Product Highlights',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black87)),
+                        const Text(
+                          'Product Highlights',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
                         const SizedBox(height: 14),
                         renderProducts(),
                       ],
@@ -325,8 +393,14 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Quick Actions',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black87)),
+                        const Text(
+                          'Quick Actions',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
                         const SizedBox(height: 10),
                         renderQuickActions(),
                       ],
@@ -347,8 +421,14 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         alignment: Alignment.center,
-                        child: const Text('Settings',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87)),
+                        child: const Text(
+                          'Settings',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
                       ),
                     ),
                   ),

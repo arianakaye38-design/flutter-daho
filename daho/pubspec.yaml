@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: '>=3.8.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,6 +31,24 @@ dependencies:
   flutter:
     sdk: flutter
   font_awesome_flutter: ^10.5.0 # Use the latest version if available
+  flutter_map: ^8.2.2
+  latlong2: ^0.9.1
+  provider: ^6.0.5
+  shared_preferences: ^2.1.1
+  # Temporarily disabled to allow local web/desktop runs without
+  # native/firebase plugin compilation. Re-enable when ready to
+  # work on Firebase integration and after running `flutterfire configure`.
+  # Firebase packages are prepared but commented out to avoid web build
+  # conflicts until you run `flutterfire configure` and generate
+  # `lib/firebase_options.dart` with compatible versions.
+  # Upgraded Firebase packages (major) to fix web interop. We'll update
+  # code where necessary to work with these package versions.
+  firebase_core: ^4.2.0
+  firebase_auth: ^6.1.1
+  cloud_firestore: ^6.0.3
+  # Keep firebase_database disabled for now — enable if you use RTDB.
+  # firebase_database: ^12.0.3
+  # flutter_osm_plugin: ^1.4.3
 
 
   # The following adds the Cupertino Icons font to your application.

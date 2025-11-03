@@ -1,0 +1,6 @@
+{
+  // Prevent automatic saves/format-on-save from triggering unexpected hot-reloads
+  "files.autoSave": "off",
+  "editor.formatOnSave": false,
+  "editor.formatOnType": false
+}

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'services/firebase_auth_service.dart';
+import 'customer_account.dart';
+import 'owner_account.dart';
+import 'courier_account.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -12,7 +16,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final passwordController = TextEditingController();
   String error = '';
 
-  void _handleSignIn() {
+  void _handleSignIn() async {
     final email = emailController.text.trim();
     final password = passwordController.text;
 
@@ -26,10 +30,32 @@ class _SignInScreenState extends State<SignInScreen> {
       return;
     }
 
+    final userType = await FirebaseAuthService.instance.login(email, password);
+    if (userType == null) {
+      setState(() => error = 'Invalid email or password.');
+      return;
+    }
+
     setState(() => error = '');
 
-    // Replace debugPrint with your actual auth logic
-    debugPrint('Signing in user with email: $email');
+    // Navigate to the appropriate dashboard
+    if (!mounted) return;
+    if (userType == 'owner') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OwnerDashboard()),
+      );
+    } else if (userType == 'courier') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const CourierDashboard()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const CustomerAccount()),
+      );
+    }
   }
 
   @override
@@ -72,14 +98,25 @@ class _SignInScreenState extends State<SignInScreen> {
                 ElevatedButton(
                   onPressed: _handleSignIn,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1976d2), // Changed from primary
-                    minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 48),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: const Color(
+                      0xFF1976d2,
+                    ), // Changed from primary
+                    minimumSize: Size(
+                      MediaQuery.of(context).size.width * 0.5,
+                      48,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     elevation: 2,
                   ),
                   child: const Text(
                     'Log In',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 1),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -88,9 +125,14 @@ class _SignInScreenState extends State<SignInScreen> {
                     Navigator.pushNamed(context, '/sign-up');
                   },
                   style: OutlinedButton.styleFrom(
-                    minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 48),
+                    minimumSize: Size(
+                      MediaQuery.of(context).size.width * 0.5,
+                      48,
+                    ),
                     side: const BorderSide(color: Color(0xFF1976d2)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     backgroundColor: Colors.white,
                     elevation: 1,
                   ),
