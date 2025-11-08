@@ -7,22 +7,22 @@ final List<Map<String, dynamic>> productData = [
     'name': 'Mango Piaya',
     'price': '₱25.00',
     'NetWt': '4pcs x 35g',
-    'img': 'assets/images/partial-react-logo.png',
+    'img': 'assets/images/DAHO LOGO.jpg',
   },
   {
     'name': 'Dried Mangoes',
     'price': '₱180.00',
-    'img': 'assets/images/partial-react-logo.png',
+    'img': 'assets/images/DAHO LOGO.jpg',
   },
   {
     'name': 'Biscocho',
     'price': '₱120.00',
-    'img': 'assets/images/partial-react-logo.png',
+    'img': 'assets/images/DAHO LOGO.jpg',
   },
   {
     'name': 'Ube Pastillas',
     'price': '₱200.00',
-    'img': 'assets/images/partial-react-logo.png',
+    'img': 'assets/images/DAHO LOGO.jpg',
   },
   {'name': 'more', 'price': '', 'img': null},
 ];
@@ -327,7 +327,9 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                               borderRadius: BorderRadius.circular(10),
                               onTap: handleSettings,
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.grey[300],
                                   borderRadius: BorderRadius.circular(10),

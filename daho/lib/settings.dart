@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-final List<String> nationalities = [
-  "Filipino",
-  "American",
-  "Japanese",
-]..sort();
+final List<String> nationalities = ["Filipino", "American", "Japanese"]..sort();
 
 class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
@@ -67,18 +63,27 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
           const SizedBox(height: 10),
           Text(
             fields['username'] ?? '',
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
           const SizedBox(height: 32),
-            ...sidebarOptions.map((opt) {
+          ...sidebarOptions.map((opt) {
             final isActive = active == opt['key'];
             return Material(
               type: MaterialType.transparency,
               child: InkWell(
                 onTap: () => setState(() => active = opt['key'] as String),
                 child: Container(
-                  color: isActive ? Colors.white.withAlpha((0.06 * 255).round()) : Colors.transparent,
-                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+                  color: isActive
+                      ? Colors.white.withAlpha((0.06 * 255).round())
+                      : Colors.transparent,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14,
+                    horizontal: 18,
+                  ),
                   child: Row(
                     children: [
                       if (isActive)
@@ -90,21 +95,35 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                         )
                       else
                         const SizedBox(width: 12),
-                      Icon(opt['icon'] as IconData, color: Colors.white, size: 22),
+                      Icon(
+                        opt['icon'] as IconData,
+                        color: Colors.white,
+                        size: 22,
+                      ),
                       const SizedBox(width: 8),
-                      Text(opt['label'] as String, style: const TextStyle(color: Colors.white, fontSize: 15)),
+                      Text(
+                        opt['label'] as String,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             );
-          })
+          }),
         ],
       ),
     );
   }
 
-  Widget buildInputField(String key, String placeholder, {bool isNumeric = false}) {
+  Widget buildInputField(
+    String key,
+    String placeholder, {
+    bool isNumeric = false,
+  }) {
     final controller = TextEditingController(text: fields[key]);
     return TextField(
       controller: controller,
@@ -120,12 +139,21 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 16,
+        ),
       ),
     );
   }
 
-  Widget buildDropdown(String fieldKey, String title, List<String> options, bool isVisible, void Function(bool) setVisible) {
+  Widget buildDropdown(
+    String fieldKey,
+    String title,
+    List<String> options,
+    bool isVisible,
+    void Function(bool) setVisible,
+  ) {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
@@ -139,10 +167,14 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
-            (fields[fieldKey] ?? '').toString().isNotEmpty ? fields[fieldKey]! : title,
+            (fields[fieldKey] ?? '').toString().isNotEmpty
+                ? fields[fieldKey]!
+                : title,
             style: TextStyle(
               fontSize: 15,
-              color: (fields[fieldKey] ?? '').isNotEmpty ? Colors.black : Colors.grey[600],
+              color: (fields[fieldKey] ?? '').isNotEmpty
+                  ? Colors.black
+                  : Colors.grey[600],
             ),
           ),
         ),
@@ -174,7 +206,14 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
               const SizedBox(height: 22),
               SizedBox(
                 height: 300,
@@ -182,9 +221,16 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                   itemCount: options.length,
                   itemBuilder: (_, index) {
                     final Object option = options[index];
-                    final String item = option as String;  // Explicit cast to String
+                    final String item =
+                        option as String; // Explicit cast to String
                     return ListTile(
-                      title: Text(item, style: const TextStyle(color: Colors.white, fontSize: 15)),
+                      title: Text(
+                        item,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
                       onTap: () {
                         onSelected(item);
                         onVisibilityChange(false);
@@ -220,7 +266,11 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
             children: [
               const Text(
                 'Log out account?',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -234,9 +284,17 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF1976D2),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      child: const Text('Yes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Yes',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -245,13 +303,21 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       onPressed: () => setState(() => showLogoutModal = false),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      child: const Text('No', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'No',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -277,14 +343,22 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                              size: 28,
+                            ),
                             onPressed: handleBack,
                           ),
                         ),
                         const SizedBox(height: 12),
                         const Text(
                           'Settings',
-                          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         const SizedBox(height: 24),
                         Expanded(
@@ -296,19 +370,41 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                                 buildInputField('username', 'Username'),
                                 buildInputField('gmail', 'Gmail'),
                                 buildInputField('age', 'Age', isNumeric: true),
-                                buildDropdown('gender', 'Select Gender', ['Male', 'Female', 'Other'], showGenderModal, (v) => setState(() => showGenderModal = v)),
-                                buildDropdown('nationality', 'Select Nationality', nationalities, showNationalityModal, (v) => setState(() => showNationalityModal = v)),
+                                buildDropdown(
+                                  'gender',
+                                  'Select Gender',
+                                  ['Male', 'Female', 'Other'],
+                                  showGenderModal,
+                                  (v) => setState(() => showGenderModal = v),
+                                ),
+                                buildDropdown(
+                                  'nationality',
+                                  'Select Nationality',
+                                  nationalities,
+                                  showNationalityModal,
+                                  (v) =>
+                                      setState(() => showNationalityModal = v),
+                                ),
                                 ElevatedButton(
-                                  onPressed: () => setState(() => showLogoutModal = true),
+                                  onPressed: () =>
+                                      setState(() => showLogoutModal = true),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF1976D2),
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                   ),
                                   child: const Center(
                                     child: Text(
                                       'Log Out',
-                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -321,14 +417,16 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                   ),
                   buildModal(
                     visible: showGenderModal,
-                    onVisibilityChange: (v) => setState(() => showGenderModal = v),
+                    onVisibilityChange: (v) =>
+                        setState(() => showGenderModal = v),
                     title: 'Select Gender',
                     options: ['Male', 'Female', 'Other'],
                     onSelected: (val) => handleChange('gender', val),
                   ),
                   buildModal(
                     visible: showNationalityModal,
-                    onVisibilityChange: (v) => setState(() => showNationalityModal = v),
+                    onVisibilityChange: (v) =>
+                        setState(() => showNationalityModal = v),
                     title: 'Select Nationality',
                     options: nationalities,
                     onSelected: (val) => handleChange('nationality', val),

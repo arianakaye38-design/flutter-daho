@@ -35,7 +35,10 @@ class MobileButton extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     label,
-                    style: const TextStyle(fontSize: 12, color: Color(0xFF111827)),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF111827),
+                    ),
                   ),
                 ],
               ),
