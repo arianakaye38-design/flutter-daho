@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
+import 'log_in.dart';
 
 final List<Map<String, dynamic>> productData = [
   {
@@ -86,22 +87,26 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
       runSpacing: 12,
       children: productData.map((p) {
         if (p['name'] == 'more') {
-          return GestureDetector(
-            onTap: () => Navigator.pushNamed(context, '/more-button'),
-            child: Container(
-              width: 90,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              alignment: Alignment.center,
-              child: const Text(
-                'More',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Colors.black87,
+          return Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: () => Navigator.pushNamed(context, '/more-button'),
+              child: Container(
+                width: 90,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                alignment: Alignment.center,
+                child: const Text(
+                  'More',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
                 ),
               ),
             ),
@@ -165,7 +170,7 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
         'color': Colors.orange[700],
         'onPressed': handleContactCourier,
       },
-      {'label': 'Inbox', 'color': Colors.blue[700], 'onPressed': handleInbox},
+      // Inbox removed per UX request. Keep quick actions focused.
     ];
 
     List<Widget> quickActionButtons = buttons
@@ -202,6 +207,19 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Owner Dashboard'),
+        leading: IconButton(
+          tooltip: 'Back to Login',
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const LoginScreen()),
+            );
+          },
+        ),
+      ),
       backgroundColor: Colors.grey[100],
       body: isDesktop
           ? Padding(
@@ -303,21 +321,25 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                             borderRadius: BorderRadius.circular(18),
                           ),
                           padding: const EdgeInsets.all(18),
-                          child: GestureDetector(
-                            onTap: handleSettings,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'Settings',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(10),
+                              onTap: handleSettings,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'Settings',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
+                                  ),
                                 ),
                               ),
                             ),
@@ -412,21 +434,25 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                       borderRadius: BorderRadius.circular(18),
                     ),
                     padding: const EdgeInsets.all(18),
-                    child: GestureDetector(
-                      onTap: handleSettings,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Settings',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: handleSettings,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Settings',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
                           ),
                         ),
                       ),

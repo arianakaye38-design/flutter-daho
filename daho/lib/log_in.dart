@@ -168,42 +168,46 @@ class _LoginScreenState extends State<LoginScreen> {
                   final iconColor = isSelected
                       ? Colors.white
                       : const Color(0xFF1976d2);
-                  return GestureDetector(
-                    onTap: () =>
-                        setState(() => userType = type['value'] as String),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 2),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? const Color(0xFF1976d2)
-                            : const Color(0xFFF0F0F0),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: isSelected
-                              ? const Color(0xFF070707)
-                              : Colors.grey,
+                  return Material(
+                    type: MaterialType.transparency,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () =>
+                          setState(() => userType = type['value'] as String),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 2),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 10,
                         ),
-                      ),
-                      child: Column(
-                        children: [
-                          Icon(
-                            type['icon'] as IconData,
-                            color: iconColor,
-                            size: 25,
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? const Color(0xFF1976d2)
+                              : const Color(0xFFF0F0F0),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: isSelected
+                                ? const Color(0xFF070707)
+                                : Colors.grey,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            type['label'] as String,
-                            style: TextStyle(
-                              color: isSelected ? Colors.white : Colors.black,
-                              fontWeight: FontWeight.w500,
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(
+                              type['icon'] as IconData,
+                              color: iconColor,
+                              size: 25,
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 4),
+                            Text(
+                              type['label'] as String,
+                              style: TextStyle(
+                                color: isSelected ? Colors.white : Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

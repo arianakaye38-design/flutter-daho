@@ -94,7 +94,9 @@ class _CustomerAccountState extends State<CustomerAccount> {
 
   void _onMarkerTap(Map<String, dynamic> lm) {
     // Decide which product source to show: owner's productData for pasalubong
-    final bool isPasalubong = (lm['type'] as String) == 'pasalubong';
+    final String type = (lm['type'] as String);
+    final bool isPasalubong = type == 'pasalubong';
+    final bool isSchoolOrChurch = type == 'school' || type == 'church';
     showModalBottomSheet(
       context: context,
       builder: (_) => SizedBox(
@@ -107,59 +109,70 @@ class _CustomerAccountState extends State<CustomerAccount> {
             ),
             const Divider(),
             Expanded(
-              child: isPasalubong
-                  ? ListView.builder(
-                      itemCount: productData.length,
-                      itemBuilder: (context, index) {
-                        final p = productData[index];
-                        return ListTile(
-                          leading: p['img'] != null
-                              ? Image.asset(
-                                  p['img'],
-                                  width: 48,
-                                  height: 48,
-                                  fit: BoxFit.cover,
-                                )
-                              : const SizedBox(width: 48, height: 48),
-                          title: Text(p['name'] as String),
-                          subtitle: Text(p['price'] as String? ?? ''),
-                          trailing: ElevatedButton(
-                            child: const Text('Buy'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              final storePos = lm['position'] as LatLng;
-                              final deliveryPos = LatLng(
-                                storePos.latitude + 0.002,
-                                storePos.longitude + 0.001,
-                              );
-                              _startCourierSimulation(storePos, deliveryPos);
-                            },
-                          ),
-                        );
-                      },
+              child: isSchoolOrChurch
+                  // Schools and churches are not sellers — show info only.
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          '${lm['name']} is a ${type == 'school' ? 'school' : 'church'}.\nThis location does not offer pasalubong products.',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     )
-                  : ListView.builder(
-                      itemCount: _sampleProducts.length,
-                      itemBuilder: (context, index) {
-                        final p = _sampleProducts[index];
-                        return ListTile(
-                          title: Text(p.name),
-                          subtitle: Text('₱${p.price}'),
-                          trailing: ElevatedButton(
-                            child: const Text('Buy'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              final storePos = lm['position'] as LatLng;
-                              final deliveryPos = LatLng(
-                                storePos.latitude + 0.002,
-                                storePos.longitude + 0.001,
-                              );
-                              _startCourierSimulation(storePos, deliveryPos);
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                  : isPasalubong
+                      ? ListView.builder(
+                          itemCount: productData.length,
+                          itemBuilder: (context, index) {
+                            final p = productData[index];
+                            return ListTile(
+                              leading: p['img'] != null
+                                  ? Image.asset(
+                                      p['img'],
+                                      width: 48,
+                                      height: 48,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : const SizedBox(width: 48, height: 48),
+                              title: Text(p['name'] as String),
+                              subtitle: Text(p['price'] as String? ?? ''),
+                              trailing: ElevatedButton(
+                                child: const Text('Buy'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  final storePos = lm['position'] as LatLng;
+                                  final deliveryPos = LatLng(
+                                    storePos.latitude + 0.002,
+                                    storePos.longitude + 0.001,
+                                  );
+                                  _startCourierSimulation(storePos, deliveryPos);
+                                },
+                              ),
+                            );
+                          },
+                        )
+                      : ListView.builder(
+                          itemCount: _sampleProducts.length,
+                          itemBuilder: (context, index) {
+                            final p = _sampleProducts[index];
+                            return ListTile(
+                              title: Text(p.name),
+                              subtitle: Text('₱${p.price}'),
+                              trailing: ElevatedButton(
+                                child: const Text('Buy'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  final storePos = lm['position'] as LatLng;
+                                  final deliveryPos = LatLng(
+                                    storePos.latitude + 0.002,
+                                    storePos.longitude + 0.001,
+                                  );
+                                  _startCourierSimulation(storePos, deliveryPos);
+                                },
+                              ),
+                            );
+                          },
+                        ),
             ),
           ],
         ),

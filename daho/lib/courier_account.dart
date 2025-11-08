@@ -3,7 +3,11 @@
 // async work later we'll add proper mounted checks instead of silencing.
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
+import 'log_in.dart';
+import 'notifications_page.dart';
+import 'history_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'widgets/mobile_button.dart';
 
 class CourierDashboard extends StatelessWidget {
   const CourierDashboard({super.key});
@@ -19,6 +23,30 @@ class CourierDashboard extends StatelessWidget {
     final isDesktop = width >= 900;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Courier Dashboard'),
+        leading: IconButton(
+          tooltip: 'Back to Login',
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const LoginScreen()),
+            );
+          },
+        ),
+        actions: [
+          IconButton(
+            tooltip: 'Refresh',
+            onPressed: () {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Refreshed')));
+            },
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
+      ),
       backgroundColor: const Color(0xFFF3F4F6),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -84,8 +112,15 @@ class CourierDashboard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                            onPressed: () =>
-                                debugPrint("Notifications clicked!"),
+                            tooltip: 'Notifications',
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const NotificationsPage(),
+                                ),
+                              );
+                            },
                             icon: const FaIcon(
                               FontAwesomeIcons.bell,
                               size: 22,
@@ -93,10 +128,12 @@ class CourierDashboard extends StatelessWidget {
                             ),
                           ),
                           IconButton(
+                            tooltip: 'Settings',
                             onPressed: () {
-                              // Replace with your navigation logic
-                              debugPrint(
-                                'Navigate to user-settings from courier-dashboard',
+                              Navigator.pushNamed(
+                                context,
+                                '/user-settings',
+                                arguments: {'from': 'courier-dashboard'},
                               );
                             },
                             icon: const FaIcon(
@@ -106,7 +143,15 @@ class CourierDashboard extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            onPressed: () => debugPrint("History clicked!"),
+                            tooltip: 'History',
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const HistoryPage(),
+                                ),
+                              );
+                            },
                             icon: const FaIcon(
                               FontAwesomeIcons.clockRotateLeft,
                               size: 22,
@@ -215,8 +260,7 @@ class CourierDashboard extends StatelessWidget {
                                         _log('Notifications clicked!'),
                                   ),
                                   MobileButton(
-                                    // ignore: deprecated_member_use
-                                    icon: FontAwesomeIcons.cog,
+                                    icon: FontAwesomeIcons.gear,
                                     label: 'Settings',
                                     onPressed: () {
                                       // Replace with your navigation logic
@@ -226,8 +270,7 @@ class CourierDashboard extends StatelessWidget {
                                     },
                                   ),
                                   MobileButton(
-                                    // ignore: deprecated_member_use
-                                    icon: FontAwesomeIcons.history,
+                                    icon: FontAwesomeIcons.clockRotateLeft,
                                     label: 'History',
                                     onPressed: () => _log('History clicked!'),
                                   ),
@@ -446,32 +489,4 @@ class DeliveryCard extends StatelessWidget {
   }
 }
 
-class MobileButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onPressed;
-
-  const MobileButton({
-    super.key,
-    required this.icon,
-    required this.label,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Column(
-        children: [
-          FaIcon(icon, size: 22, color: const Color(0xFF1F2937)),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 12, color: Color(0xFF111827)),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// `MobileButton` moved to `lib/widgets/mobile_button.dart` for reuse.

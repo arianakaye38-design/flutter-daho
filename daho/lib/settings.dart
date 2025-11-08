@@ -70,28 +70,31 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
             style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
           ),
           const SizedBox(height: 32),
-          ...sidebarOptions.map((opt) {
+            ...sidebarOptions.map((opt) {
             final isActive = active == opt['key'];
-            return GestureDetector(
-              onTap: () => setState(() => active = opt['key'] as String),
-              child: Container(
-                color: isActive ? Colors.white.withAlpha((0.06 * 255).round()) : Colors.transparent,
-                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
-                child: Row(
-                  children: [
-                    if (isActive)
-                      Container(
-                        width: 4,
-                        height: 32,
-                        color: const Color(0xFFE53935),
-                        margin: const EdgeInsets.only(right: 8),
-                      )
-                    else
-                      const SizedBox(width: 12),
-                    Icon(opt['icon'] as IconData, color: Colors.white, size: 22),
-                    const SizedBox(width: 8),
-                    Text(opt['label'] as String, style: const TextStyle(color: Colors.white, fontSize: 15)),
-                  ],
+            return Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                onTap: () => setState(() => active = opt['key'] as String),
+                child: Container(
+                  color: isActive ? Colors.white.withAlpha((0.06 * 255).round()) : Colors.transparent,
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+                  child: Row(
+                    children: [
+                      if (isActive)
+                        Container(
+                          width: 4,
+                          height: 32,
+                          color: const Color(0xFFE53935),
+                          margin: const EdgeInsets.only(right: 8),
+                        )
+                      else
+                        const SizedBox(width: 12),
+                      Icon(opt['icon'] as IconData, color: Colors.white, size: 22),
+                      const SizedBox(width: 8),
+                      Text(opt['label'] as String, style: const TextStyle(color: Colors.white, fontSize: 15)),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -123,20 +126,24 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   }
 
   Widget buildDropdown(String fieldKey, String title, List<String> options, bool isVisible, void Function(bool) setVisible) {
-    return GestureDetector(
-      onTap: () => setVisible(true),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-        margin: const EdgeInsets.only(bottom: 18),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          (fields[fieldKey] ?? '').toString().isNotEmpty ? fields[fieldKey]! : title,
-          style: TextStyle(
-            fontSize: 15,
-            color: (fields[fieldKey] ?? '').isNotEmpty ? Colors.black : Colors.grey[600],
+    return Material(
+      type: MaterialType.transparency,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: () => setVisible(true),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          margin: const EdgeInsets.only(bottom: 18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            (fields[fieldKey] ?? '').toString().isNotEmpty ? fields[fieldKey]! : title,
+            style: TextStyle(
+              fontSize: 15,
+              color: (fields[fieldKey] ?? '').isNotEmpty ? Colors.black : Colors.grey[600],
+            ),
           ),
         ),
       ),
