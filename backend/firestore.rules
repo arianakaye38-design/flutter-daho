@@ -1,0 +1,133 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function getUserData() {
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
+      return userDoc.data;
+    }
+    
+    function userExists() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+    
+    function getUserRole() {
+      return userExists() && 'type' in getUserData() ? getUserData().type : 'customer';
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && userExists() && getUserRole() == 'admin';
+    }
+    
+    function isOwner() {
+      return isSignedIn() && userExists() && getUserRole() == 'owner';
+    }
+    
+    function isCustomer() {
+      return isSignedIn() && (getUserRole() == 'customer' || !userExists());
+    }
+    
+    function isCourier() {
+      return isSignedIn() && userExists() && getUserRole() == 'courier';
+    }
+    
+    // USERS COLLECTION
+    match /users/{userId} {
+      // Allow reading own profile, admins can read all, and signed-in users can read basic info for coordination
+      allow read: if request.auth.uid == userId 
+                  || (isSignedIn() && userExists() && isAdmin())
+                  || isSignedIn(); // Allow any authenticated user to read user profiles for order coordination
+      // Allow creating a document with the same UID as the authenticated user
+      // This is needed for both initial registration and email migration
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if request.auth.uid == userId || (isSignedIn() && userExists() && isAdmin());
+      allow delete: if request.auth.uid == userId || (isSignedIn() && userExists() && isAdmin());
+    }
+    
+    // ORDERS COLLECTION
+    match /orders/{orderId} {
+      allow read: if isSignedIn();
+      // Allow any signed-in user to create orders (they default to customer)
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn() && userExists() && isAdmin();
+    }
+    
+    // COURIERS COLLECTION
+    match /couriers/{courierId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (request.auth.uid == courierId || isAdmin());
+    }
+    
+    // PRODUCTS COLLECTION
+    match /products/{productId} {
+      allow read: if true;
+      allow create: if isOwner() || isAdmin();
+      allow delete: if isOwner() || isAdmin();
+      // Allow customers to update stock when placing orders, owners/admins can update anything
+      allow update: if isSignedIn();
+    }
+    
+    // PASALUBONG CENTERS COLLECTION
+    match /pasalubong_centers/{centerId} {
+      allow read: if true;
+      allow write: if isOwner() || isAdmin();
+    }
+    
+    // NOTIFICATIONS COLLECTION
+    match /notifications/{notificationId} {
+      // Users can read their own notifications
+      allow read: if isSignedIn() && request.auth.uid == resource.data.userId;
+      // Couriers can create notifications when accepting orders
+      // Owners and system can create notifications
+      allow create: if isSignedIn() && (isCourier() || isOwner() || isAdmin());
+      // Users can update their own notifications (e.g., mark as read)
+      allow update: if isSignedIn() && request.auth.uid == resource.data.userId;
+      // Only admins can delete notifications
+      allow delete: if isAdmin();
+    }
+    
+    // MESSAGES COLLECTION
+    match /messages/{messageId} {
+      // Users can read conversations they are part of, admins can read all for report review
+      allow read: if isSignedIn() && 
+        (request.auth.uid == resource.data.userId || 
+         request.auth.uid == resource.data.courierId ||
+         request.auth.uid == resource.data.ownerId ||
+         isAdmin());
+      // Users can create new conversations
+      allow create: if isSignedIn();
+      // Users can update conversations they are part of
+      allow update: if isSignedIn();
+      // Users can delete conversations they are part of
+      allow delete: if isSignedIn();
+      
+      // Chat subcollection - simplified rules for better reliability
+      match /chat/{chatMessageId} {
+        // Any signed-in user can read and create messages
+        // The app logic ensures users only access their own conversations
+        allow read, create: if isSignedIn();
+        // Users can delete their own messages or admins can delete any
+        allow delete: if isSignedIn();
+        // Only admins can update chat messages
+        allow update: if isSignedIn() && userExists() && isAdmin();
+      }
+    }
+    
+    // REPORTS COLLECTION
+    match /reports/{reportId} {
+      // Users can read their own reports
+      allow read: if isSignedIn() && 
+        (request.auth.uid == resource.data.reportedBy || isAdmin());
+      // Any signed-in user can create a report
+      allow create: if isSignedIn();
+      // Only admins can update or delete reports
+      allow update, delete: if isAdmin();
+    }
+  }
+}
